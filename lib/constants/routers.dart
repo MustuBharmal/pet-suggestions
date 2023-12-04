@@ -1,5 +1,6 @@
-import 'package:adv_basics/screen/question_screen_4.dart';
 import 'package:flutter/material.dart';
+
+import '../screen/question_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
