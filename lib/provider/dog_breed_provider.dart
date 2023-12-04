@@ -58,7 +58,7 @@ class DogBreedProvider with ChangeNotifier {
     // Add more dog breeds as needed
   ];
 
-  List<DogBreed> get dogbreed {
+  List<DogBreed> get dogBreed {
     return [...dogBreeds];
   }
 }

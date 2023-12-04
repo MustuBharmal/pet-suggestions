@@ -8,36 +8,36 @@ class QuestionProvider with ChangeNotifier {
     Question(
       question: 'How active are you?',
       options: ['Not active', 'Somewhat active', 'Very active'],
-      type: '',
+      type: 'radio',
     ),
     Question(
         question: 'Do you prefer a big or small dog?',
         options: ['Big', 'Small'],
-        type: ''),
+        type: 'checkbox'),
     Question(
         question: 'Are you looking for a guard dog?',
         options: ['Yes', 'No'],
-        type: ''),
+        type: 'radio'),
     Question(
         question: 'How much grooming are you willing to do?',
         options: ['Low', 'Medium', 'High'],
-        type: ''),
+        type: 'radio'),
     Question(
         question: 'Do you have children at home?',
         options: ['Yes', 'No'],
-        type: ''),
+        type: 'radio'),
     Question(
         question: 'How often do you have time for walks?',
         options: ['Rarely', 'Sometimes', 'Frequently'],
-        type: ''),
+        type: 'radio'),
     Question(
         question: 'Do you live in an apartment or house?',
         options: ['Apartment', 'House'],
-        type: ''),
+        type: 'radio'),
     Question(
         question: 'How much barking can you tolerate?',
         options: ['Low', 'Medium', 'High'],
-        type: ''),
+        type: 'slider'),
   ];
   List<Question> get question {
     return [...questions];

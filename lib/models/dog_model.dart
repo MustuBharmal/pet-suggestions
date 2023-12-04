@@ -1,6 +1,6 @@
 class DogBreed {
-  String name;
+  String breed;
   List<String> characteristics;
 
-  DogBreed(this.name, this.characteristics);
+  DogBreed(this.breed, this.characteristics);
 }
