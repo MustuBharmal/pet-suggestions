@@ -4,3 +4,4 @@ class DogBreed {
 
   DogBreed(this.breed, this.characteristics);
 }
+

@@ -4,16 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ResultsScreen extends StatefulWidget {
-  final List<dynamic> answers;
 
-  const ResultsScreen(this.answers, {super.key});
+  static const String routeName = 'result-screen';
+
+  const ResultsScreen({super.key});
 
   @override
   State<ResultsScreen> createState() => _ResultsScreenState();
 }
 
 class _ResultsScreenState extends State<ResultsScreen> {
-  late final dogBreeds;
+  List<dynamic>? answers;
+  dynamic dogBreeds;
   bool dataFetched = false;
 
   List<String> getRecommendedDogBreeds() {
@@ -24,7 +26,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
       String breed = dogBreed.breed;
       List<String> character = dogBreed.characteristics;
       for (int i = 0; i < character.length; i++) {
-        if (character[i] == widget.answers[i]) {
+        print(answers![i]);
+        if (character[i] == answers![i]) {
           point = point + 1;
         }
       }
@@ -41,10 +44,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
   @override
   void didChangeDependencies() {
+    answers = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     if (!dataFetched) {
       dogBreeds = Provider.of<DogBreedProvider>(context).dogBreed;
     }
-    print(dogBreeds[0].characteristics);
     dataFetched = true;
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();

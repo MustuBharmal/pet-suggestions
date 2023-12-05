@@ -86,12 +86,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         questionIndex++;
                       } else {
                         // Navigate to results screen when all questions are answered
-                        Navigator.push(
+                        Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ResultsScreen(List.from(answers)),
-                          ),
+                          ResultsScreen.routeName,
+                          arguments: List.from(answers),
                         );
                       }
                     });
@@ -111,6 +109,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Widget buildOptions(Question question) {
     switch (question.type) {
       case 'radio':
+        print(question.options.length);
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -122,6 +121,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 onChanged: (value) {
                   setState(() {
                     answers[questionIndex] = value;
+                    print(value);
                   });
                 },
               );
@@ -146,6 +146,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   } else {
                     answers[questionIndex]?.remove(option);
                   }
+                  print(answers[questionIndex]);
                 });
               },
             );

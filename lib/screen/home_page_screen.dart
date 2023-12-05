@@ -1,4 +1,5 @@
 import 'package:adv_basics/screen/question_screen.dart';
+import 'package:adv_basics/screen/quiz_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -34,7 +35,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 30),
           OutlinedButton.icon(
             onPressed: () {
-              Navigator.pushNamed(context, QuestionScreen.routeName);
+              Navigator.pushNamed(context, QuizScreen.routeName);
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,

@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         onGenerateRoute: (settings) => generateRoute(settings),
         home: Scaffold(
           body: Container(
