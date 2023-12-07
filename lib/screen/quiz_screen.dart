@@ -1,4 +1,4 @@
-import 'package:adv_basics/screen/result_screen.dart';
+import 'package:adv_basics/screen/suggestion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,9 +25,7 @@ class _QuizScreenState extends State<QuizScreen> {
     // TODO: implement didChangeDependencies
     if (!dataFetched) {
       questions =
-          Provider
-              .of<QuestionProvider>(context, listen: false)
-              .question;
+          Provider.of<QuestionProvider>(context, listen: false).question;
 
       answers = List.generate(questions.length, (index) => null);
     }
@@ -36,29 +34,39 @@ class _QuizScreenState extends State<QuizScreen> {
     super.didChangeDependencies();
   }
 
+  bool isQuestionAnswered() {
+    return answers[questionIndex] != null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery
-        .of(context)
-        .size;
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         elevation: 10,
-        // Size(deviceSize.width * 0.90, 60),
         onPressed: () {
-          setState(() {
-            if (questionIndex < questions.length - 1) {
-              questionIndex++;
-            } else {
-              // Navigate to results screen when all questions are answered
-              Navigator.pushNamed(
-                context,
-                ResultsScreen.routeName,
-                arguments: List.from(answers),
-              );
-            }
-          });
+          if (isQuestionAnswered()) {
+            setState(() {
+              if (questionIndex < questions.length - 1) {
+                questionIndex++;
+              } else {
+                // Navigate to results screen when all questions are answered
+                Navigator.pushNamed(
+                  context,
+                  SuggestionsScreen.routeName,
+                  arguments: List.from(answers),
+                );
+              }
+            });
+          } else {
+            // Show a message or alert indicating that the question needs to be answered
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Please select an option before proceeding.'),
+              ),
+            );
+          }
         },
         backgroundColor: Colors.lightGreen,
         label: Padding(
@@ -77,24 +85,29 @@ class _QuizScreenState extends State<QuizScreen> {
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (questionIndex > 0) {
-                          questionIndex--;
-                        }
-                      });
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back_ios_rounded,
-                          color: Colors.black,
+                  questionIndex != 0
+                      ? InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (questionIndex > 0) {
+                                questionIndex--;
+                              }
+                            });
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.arrow_back_ios_rounded,
+                                color: Colors.black,
+                              ),
+                              Text('Previous'),
+                            ],
+                          ),
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40.0),
+                          child: Text(''),
                         ),
-                        Text('Previous'),
-                      ],
-                    ),
-                  ),
                   SizedBox(
                     width: deviceSize.width / 4.5,
                   ),
@@ -143,6 +156,7 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
     );
   }
+
   Widget buildOptions(Question question) {
     switch (question.type) {
       case 'radio':
@@ -164,8 +178,8 @@ class _QuizScreenState extends State<QuizScreen> {
                       ],
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(25)),
-                  child: RadioListTile(
-                      controlAffinity: ListTileControlAffinity.trailing,
+                  child: RadioListTile.adaptive(
+                    controlAffinity: ListTileControlAffinity.trailing,
                     title: Text(option),
                     value: option,
                     groupValue: answers[questionIndex],
@@ -207,12 +221,11 @@ class _QuizScreenState extends State<QuizScreen> {
                       setState(() {
                         if (value == true) {
                           answers[questionIndex] =
-                          List.from(answers[questionIndex] ?? [])
-                            ..add(option);
+                              List.from(answers[questionIndex] ?? [])
+                                ..add(option);
                         } else {
                           answers[questionIndex]?.remove(option);
                         }
-                        print(answers[questionIndex]);
                       });
                     },
                   ),
@@ -225,22 +238,22 @@ class _QuizScreenState extends State<QuizScreen> {
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Container(
-            decoration: BoxDecoration(
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 10,
-                    spreadRadius: 0.1,
-                    offset: Offset(0, 10),
-                  ),
-                ],
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25)),
+            decoration: BoxDecoration(boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10,
+                spreadRadius: 0.1,
+                offset: Offset(0, 10),
+              ),
+            ], color: Colors.white, borderRadius: BorderRadius.circular(25)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text('Select the tolerance level: ${answers[questionIndex]}',style: TextStyle(fontSize: 21),),
+                  Text(
+                    'Select the tolerance level: ${answers[questionIndex]}',
+                    style: const TextStyle(fontSize: 21),
+                  ),
                   Slider(
                     value: (answers[questionIndex] ?? 0).toDouble(),
                     min: 0,
