@@ -1,5 +1,7 @@
-import 'package:adv_basics/models/question_model.dart';
+
 import 'package:flutter/material.dart';
+
+import '../models/question_model.dart';
 
 class QuestionProvider with ChangeNotifier {
   List<Question> questions = [
@@ -33,9 +35,18 @@ class QuestionProvider with ChangeNotifier {
         options: ['Apartment', 'House'],
         type: 'radio'),
     Question(
+        question: 'How much time are you willing to invest in training?',
+        options: ['Low', 'Moderate', 'As much Required'],
+        type: 'radio'),
+    Question(
+        question: 'How frequently do you travel or plan to travel with your dog?',
+        options: ['Rarely', 'Occasionally', 'Frequently'],
+        type: 'radio'),
+    Question(
         question: 'How much barking can you tolerate?',
         options: ['Low', 'Medium', 'High'],
         type: 'slider'),
+
   ];
   List<Question> get question {
     return [...questions];

@@ -1,16 +1,16 @@
 # pet_suggestions
 
-A new Flutter project.
+Welcome to the Dog Matcher Quiz App! This Flutter app helps users find dog breeds that match their preferences and habits through a multi-step questionnaire.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This application contains multiple directories. Let's begin with screen directory. 
+Dog Matcher Quiz App contains 3 screens in total. Welcome screen, Quiz screen and Suggestion screen,
+Then comes the models directory. In the models directory there are 2 files who store model dog and other is questionnaire.
+Third and last is provider and constant respectively. Providers are use to pass data throughout the app conveniently. Also they are used in case we have to fetch data from database.
+Constants directory have contents of any type like colors, font weight, custom theme etc.
 
-A few resources to get you started if this is your first Flutter project:
+### Installing
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Clone the repository:
+https://github.com/your-username/dog-matcher-quiz-app.git

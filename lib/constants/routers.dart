@@ -1,7 +1,8 @@
-import 'package:adv_basics/screen/suggestion_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screen/quiz_screen.dart';
+import '../screen/suggestion_screen.dart';
+import '../screen/welcome_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -14,6 +15,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (abc) => const SuggestionsScreen(),
+      );
+    case WelcomePage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (abc) => const WelcomePage(),
       );
     default:
       return MaterialPageRoute(

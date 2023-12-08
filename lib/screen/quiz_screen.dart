@@ -1,7 +1,10 @@
-import 'package:adv_basics/screen/suggestion_screen.dart';
+
 import 'package:flutter/material.dart';
+import 'package:pet_suggestions/screen/suggestion_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/colors.dart';
+import '../constants/global_variables.dart';
 import '../models/question_model.dart';
 import '../provider/question_provider.dart';
 
@@ -68,25 +71,32 @@ class _QuizScreenState extends State<QuizScreen> {
             );
           }
         },
-        backgroundColor: Colors.lightGreen,
         label: Padding(
           padding: const EdgeInsets.all(70.0),
           child: Text(
             questionIndex < questions.length - 1 ? 'Next' : 'Result',
-            style: const TextStyle(color: Colors.white, fontSize: 24),
+            style: titleStyle,
           ),
         ),
       ),
-      body: SafeArea(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/bg_image.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.symmetric(vertical: 40.0),
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   questionIndex != 0
-                      ? InkWell(
+                      ? GestureDetector(
                           onTap: () {
                             setState(() {
                               if (questionIndex > 0) {
@@ -94,13 +104,16 @@ class _QuizScreenState extends State<QuizScreen> {
                               }
                             });
                           },
-                          child: const Row(
+                          child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.arrow_back_ios_rounded,
                                 color: Colors.black,
                               ),
-                              Text('Previous'),
+                              Text(
+                                'Previous',
+                                style: subtitleStyle,
+                              ),
                             ],
                           ),
                         )
@@ -113,8 +126,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                   Text(
                     "${(questionIndex + 1)} / ${questions.length}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 18),
+                    style: subtitleStyle,
                   ),
                 ],
               ),
@@ -125,14 +137,17 @@ class _QuizScreenState extends State<QuizScreen> {
             Container(
               width: deviceSize.width * 0.85,
               height: deviceSize.height / 4,
-              decoration: BoxDecoration(boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  spreadRadius: 0.1,
-                  offset: Offset(0, 10),
-                ),
-              ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xFFFCC89E),
+                      blurRadius: 10,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, 10),
+                    ),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
@@ -140,9 +155,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     questions[questionIndex].question,
                     softWrap: true,
                     overflow: TextOverflow.clip,
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
+                    style: headerStyle,
                   ),
                 ),
               ),
@@ -179,8 +192,12 @@ class _QuizScreenState extends State<QuizScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(25)),
                   child: RadioListTile.adaptive(
+                    activeColor: ThemeColor.black,
                     controlAffinity: ListTileControlAffinity.trailing,
-                    title: Text(option),
+                    title: Text(
+                      option,
+                      style: titleStyle,
+                    ),
                     value: option,
                     groupValue: answers[questionIndex],
                     onChanged: (value) {
@@ -215,7 +232,11 @@ class _QuizScreenState extends State<QuizScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(25)),
                   child: CheckboxListTile(
-                    title: Text(option),
+                    activeColor: ThemeColor.black,
+                    title: Text(
+                      option,
+                      style: titleStyle,
+                    ),
                     value: answers[questionIndex]?.contains(option) ?? false,
                     onChanged: (value) {
                       setState(() {
@@ -252,13 +273,14 @@ class _QuizScreenState extends State<QuizScreen> {
                 children: [
                   Text(
                     'Select the tolerance level: ${answers[questionIndex]}',
-                    style: const TextStyle(fontSize: 21),
+                    style: titleStyle,
                   ),
                   Slider(
+                    activeColor: ThemeColor.black,
                     value: (answers[questionIndex] ?? 0).toDouble(),
                     min: 0,
-                    max: 2,
-                    divisions: 2,
+                    max: 3,
+                    divisions: 3,
                     onChanged: (value) {
                       setState(() {
                         answers[questionIndex] = value.round();

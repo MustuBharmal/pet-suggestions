@@ -1,16 +1,17 @@
-import 'package:adv_basics/screen/quiz_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:pet_suggestions/screen/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/global_variables.dart';
+import '../models/dog_model.dart';
 import '../provider/dog_breed_provider.dart';
-class Result{
-  final String dogBreed;
-  final double percent;
-  Result(this.dogBreed, this.percent);
-}
+
 class SuggestionsScreen extends StatefulWidget {
   const SuggestionsScreen({super.key});
+
   static const String routeName = 'suggestions-screen';
+
   @override
   State<SuggestionsScreen> createState() => _SuggestionsScreenState();
 }
@@ -19,6 +20,7 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
   List<dynamic>? answers;
   dynamic dogBreeds;
   bool dataFetched = false;
+
   List<Result> getRecommendedDogBreeds() {
     List<Result> recommendedBreeds = [];
 
@@ -28,11 +30,15 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
       List<String> character = dogBreed.characteristics;
       for (int i = 0; i < character.length; i++) {
         if (character[i] == answers![i]) {
+          print(answers![i]);
           point = point + 1;
         }
       }
-      if (point >= 4) {
-        recommendedBreeds.add();
+      if (point >= 5) {
+        print(point);
+        Result result = Result(breed, (point * 100) / 8);
+        print(result.percent);
+        recommendedBreeds.add(result);
       }
     });
 
@@ -40,6 +46,7 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
         .take(5)
         .toList(); // Show up to 5 recommended breeds
   }
+
   @override
   void didChangeDependencies() {
     answers = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
@@ -54,6 +61,7 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
   @override
   Widget build(BuildContext context) {
     List<Result> recommendedBreeds = getRecommendedDogBreeds();
+    recommendedBreeds.reversed;
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -62,90 +70,127 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
         onPressed: () {
           Navigator.pushNamedAndRemoveUntil(
             context,
-            QuizScreen.routeName,
+            WelcomePage.routeName,
             (route) => false,
           );
         },
-        backgroundColor: Colors.lightGreen,
         label: const Padding(
           padding: EdgeInsets.all(70.0),
           child: Text(
             'Retry',
-            style: TextStyle(color: Colors.white, fontSize: 24),
+            style: titleStyle,
           ),
         ),
       ),
-      appBar: AppBar(
-        title: const Text('Results'),
-      ),
-      body: Stack(
-        children: [
-          recommendedBreeds.isEmpty
-              ? const Center(
-                  child: Text(
-                  'No suitable breeds found.',
-                  style: TextStyle(fontSize: 20),
-                ))
-              : ListView.builder(
-                  itemBuilder: (ctx, i) => SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: (deviceSize.width),
-                            height: (deviceSize.height / 4.5),
-                            decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 10,
-                                    spreadRadius: 0.1,
-                                    offset: Offset(0, 10),
-                                  )
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/bg_image.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          children: [
+            recommendedBreeds.isEmpty
+                ? const Center(
+                    child: Text(
+                    'No suitable breeds found.',
+                    style: headerStyle,
+                  ))
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(
+                          top: 36.0,
+                          left: 24,
+                        ),
+                        child: Text(
+                          'Suggestions:- ',
+                          style: headerStyle,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (ctx, i) => SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: (deviceSize.width),
+                                    height: (deviceSize.height / 4.0),
+                                    decoration: BoxDecoration(
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Color(0xFFFCC89E),
+                                            blurRadius: 1,
+                                            spreadRadius: 1,
+                                            offset: Offset(0, 5),
+                                          )
+                                        ],
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: SizedBox(
+                                      width: 70,
+                                      height: 35,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              recommendedBreeds[i].dogBreed,
+                                              softWrap: false,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: titleStyle,
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            Flexible(
+                                              child: CircularPercentIndicator(
+                                                animation: false,
+                                                radius: 50.0,
+                                                lineWidth: 10.0,
+                                                percent: recommendedBreeds[i]
+                                                        .percent /
+                                                    100,
+                                                footer:
+                                                    const Text("Compatibility"),
+                                                center: Text(
+                                                    recommendedBreeds[i]
+                                                        .percent
+                                                        .toString()),
+                                                backgroundColor: Colors.black87,
+                                                progressColor:
+                                                    const Color(0xFFFAA452),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: SizedBox(
-                              width: 70,
-                              height: 35,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      recommendedBreeds[i],
-                                      softWrap: false,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Flexible(
-                                      child: Text(
-                                        'Problem Description :- ',
-                                        overflow: TextOverflow.visible,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ),
                           ),
-                        ],
+                          itemCount: recommendedBreeds.length,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  itemCount: recommendedBreeds.length,
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }
