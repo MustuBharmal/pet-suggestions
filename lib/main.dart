@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:pet_suggestions/provider/dog_breed_provider.dart';
 import 'package:pet_suggestions/provider/question_provider.dart';
@@ -15,7 +14,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: customTheme,
-
         debugShowCheckedModeBanner: false,
         onGenerateRoute: (settings) => generateRoute(settings),
         home: const WelcomePage(),

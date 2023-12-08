@@ -10,6 +10,10 @@ Then comes the models directory. In the models directory there are 2 files who s
 Third and last is provider and constant respectively. Providers are use to pass data throughout the app conveniently. Also they are used in case we have to fetch data from database.
 Constants directory have contents of any type like colors, font weight, custom theme etc.
 
+And the last is report directory. It contains brief report regarding the app and it's functionality.
+Also it is added with the e-mail I sent to greencircle.challenge@gmail.com.
+
+There is comments at required places and files throughout the app. 
 ### Installing
 
 Clone the repository:

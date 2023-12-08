@@ -1,4 +1,4 @@
-
+// Questionnaire for the user
 import 'package:flutter/material.dart';
 
 import '../models/question_model.dart';
@@ -47,7 +47,7 @@ class QuestionProvider with ChangeNotifier {
         options: ['Low', 'Medium', 'High'],
         type: 'slider'),
 
-  ];
+  ]; // Add more questions as needed
   List<Question> get question {
     return [...questions];
 

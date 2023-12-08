@@ -21,6 +21,7 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
   dynamic dogBreeds;
   bool dataFetched = false;
 
+  // method to show recommended dog and calculate the compatibility
   List<Result> getRecommendedDogBreeds() {
     List<Result> recommendedBreeds = [];
 
@@ -64,6 +65,7 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
     recommendedBreeds.reversed;
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
+      // Retry button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         elevation: 10,
@@ -94,11 +96,13 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
         child: Stack(
           children: [
             recommendedBreeds.isEmpty
+                // widget in case there is no suitable dog breed for user
                 ? const Center(
                     child: Text(
                     'No suitable breeds found.',
                     style: headerStyle,
                   ))
+                // widget to show case the suggestions for the breed that matched with the user
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

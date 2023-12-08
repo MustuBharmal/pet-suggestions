@@ -23,6 +23,7 @@ class _QuizScreenState extends State<QuizScreen> {
   bool dataFetched = false;
   late final questions;
 
+  // in case data is modified in the data so to fetch data dynamically
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -37,6 +38,7 @@ class _QuizScreenState extends State<QuizScreen> {
     super.didChangeDependencies();
   }
 
+  // to check if user has field the answer before going to next question
   bool isQuestionAnswered() {
     return answers[questionIndex] != null;
   }
@@ -45,12 +47,15 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
+
+      // Next or Result Button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         elevation: 10,
         onPressed: () {
           if (isQuestionAnswered()) {
             setState(() {
+              // condition to increase the questionIndex so user can move to next question
               if (questionIndex < questions.length - 1) {
                 questionIndex++;
               } else {
@@ -79,7 +84,9 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         ),
       ),
+
       body: Container(
+        //for background image
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
@@ -93,9 +100,9 @@ class _QuizScreenState extends State<QuizScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 40.0),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   questionIndex != 0
+                      // for navigating to previous question
                       ? GestureDetector(
                           onTap: () {
                             setState(() {
@@ -117,6 +124,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             ],
                           ),
                         )
+                      // passing null string so that there is no displacement error
                       : const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Text(''),
@@ -124,6 +132,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   SizedBox(
                     width: deviceSize.width / 4.5,
                   ),
+                  // showing the question number dynamically on the top of the page
                   Text(
                     "${(questionIndex + 1)} / ${questions.length}",
                     style: subtitleStyle,
@@ -134,6 +143,7 @@ class _QuizScreenState extends State<QuizScreen> {
             const SizedBox(
               height: 40,
             ),
+            // question show casing container and text
             Container(
               width: deviceSize.width * 0.85,
               height: deviceSize.height / 4,
@@ -163,15 +173,17 @@ class _QuizScreenState extends State<QuizScreen> {
             const SizedBox(
               height: 40,
             ),
-            Center(child: buildOptions(questions[questionIndex])),
+            // widget for show casing options and receiving ans from the user
+            Center(child: optionWidget(questions[questionIndex])),
           ],
         ),
       ),
     );
   }
 
-  Widget buildOptions(Question question) {
+  Widget optionWidget(Question question) {
     switch (question.type) {
+      // Radio button questions
       case 'radio':
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -211,6 +223,7 @@ class _QuizScreenState extends State<QuizScreen> {
             }).toList(),
           ),
         );
+    // Checkbox button questions
       case 'checkbox':
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -255,6 +268,7 @@ class _QuizScreenState extends State<QuizScreen> {
             }).toList(),
           ),
         );
+    // Slider question
       case 'slider':
         return Padding(
           padding: const EdgeInsets.all(16.0),
